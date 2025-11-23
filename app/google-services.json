@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "813232649886",
+    "project_id": "avitotech-36f49",
+    "storage_bucket": "avitotech-36f49.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:813232649886:android:fa035cfaaa70ff27c3ed8f",
+        "android_client_info": {
+          "package_name": "com.example.avitotech"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "813232649886-djpdkfjld3gci3rrrqs76d4t1br7rj77.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.avitotech",
+            "certificate_hash": "8584d24245dff87cd52a1ca72d838613bf546592"
+          }
+        },
+        {
+          "client_id": "813232649886-4mqriv4j8tgpd1l8rngfgajc0cp2athb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAmJ31xgQY_cNMpfBDz8Wb77x6Pb9xM6B0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "813232649886-4mqriv4j8tgpd1l8rngfgajc0cp2athb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
