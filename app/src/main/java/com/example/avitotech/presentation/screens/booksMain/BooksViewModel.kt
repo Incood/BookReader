@@ -3,6 +3,7 @@ package com.example.avitotech.presentation.screens.booksMain
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.avitotech.domain.models.Book
+import com.example.avitotech.domain.models.BookDownloadState
 import com.example.avitotech.domain.models.Resource
 import com.example.avitotech.domain.models.SortType
 import com.example.avitotech.domain.usecases.homeScreen.DownloadBookUseCase
@@ -134,7 +135,59 @@ class BooksViewModel @Inject constructor(
         }
     }
 
-    private fun downloadBook(bookId: String) {}
+    private fun downloadBook(bookId: String) {
+        viewModelScope.launch {
+            _uiState.update { state ->
+                state.copy(
+                    downloadStates = state.downloadStates + (bookId to BookDownloadState.Downloading)
+                )
+            }
+
+            val book = _uiState.value.books.find { it.id == bookId }
+            if (book == null) {
+                _uiState.update { state ->
+                    state.copy(
+                        downloadStates = state.downloadStates + (bookId to BookDownloadState.Error("Книга не найдена"))
+                    )
+                }
+                _toastMessage.emit("Книга не найдена")
+                return@launch
+            }
+
+            when (val result = downloadBookUseCase(book)) {
+                is Resource.Success -> {
+                    _uiState.update { state ->
+                        state.copy(
+                            books = state.books.map {
+                                if (it.id == bookId) it.copy(isDownloaded = true) else it
+                            },
+                            filteredBooks = state.filteredBooks.map {
+                                if (it.id == bookId) it.copy(isDownloaded = true) else it
+                            },
+                            downloadStates = state.downloadStates + (bookId to BookDownloadState.Downloaded)
+                        )
+                    }
+                    _toastMessage.emit("Книга успешно скачана")
+                }
+                is Resource.Error -> {
+                    _uiState.update { state ->
+                        state.copy(
+                            downloadStates = state.downloadStates + (bookId to BookDownloadState.Error(result.message))
+                        )
+                    }
+                    _toastMessage.emit(result.message)
+                }
+                else -> {
+                    _uiState.update { state ->
+                        state.copy(
+                            downloadStates = state.downloadStates + (bookId to BookDownloadState.Error("Неизвестная ошибка"))
+                        )
+                    }
+                    _toastMessage.emit("Неизвестная ошибка скачивания")
+                }
+            }
+        }
+    }
 
     private fun deleteBook(bookId: String) {
         viewModelScope.launch {

@@ -40,6 +40,8 @@ class FirestoreDataSourceImpl @Inject constructor(
                 "author" to book.author,
                 "fileUrl" to book.fileUrl,
                 "userId" to book.userId,
+                "filename" to book.filename,
+                "format" to book.format
             )
 
             if (book.id.isNotEmpty()) {
